@@ -1,0 +1,10 @@
+flask
+pymongo
+dnspython
+python-dotenv
+requests 
+icalendar
+pdfplumber
+python-docx
+markdown
+openai>=1.0.0

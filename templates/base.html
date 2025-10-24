@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Student-AI-Assistant{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Tailwind (CDN for dev; for prod consider building) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <style>
+      input:focus, button:focus { outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,.5); }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gray-50">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow w-full sticky top-0 z-50">
+      <div class="w-full px-4 sm:px-6 lg:px-8 py-3 flex items-center">
+        {% if session.get('user_id') %}
+          <!-- Show hamburger ONLY when logged in -->
+          <button id="sidebarToggle" class="mr-3 p-2 rounded hover:bg-gray-100" aria-label="Toggle sidebar" aria-expanded="false">
+            <span class="material-icons">menu</span>
+          </button>
+        {% endif %}
+
+        <!-- Brand -->
+        <div class="flex items-center gap-2">
+          <span class="material-icons text-blue-600">auto_awesome</span>
+          <a href="/">
+            <span class="font-semibold text-gray-800">Student-AI-Assistant</span>
+          </a>
+        </div>
+
+        <!-- Right side -->
+        <div class="ml-auto flex items-center gap-4">
+          {% if session.get('user_id') %}
+            <a href="{{ url_for('auth.logout') }}" class="text-sm text-gray-600 hover:text-gray-800">Logout</a>
+          {% else %}
+            <a href="{{ url_for('auth.login') }}" class="text-sm text-gray-600 hover:text-gray-800">Login</a>
+            <a href="{{ url_for('auth.register') }}" class="text-sm text-blue-600 hover:text-blue-700">Register</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    {% if session.get('user_id') %}
+      <!-- OVERLAY & SIDEBAR (only when logged in) -->
+      <div id="sidebarOverlay" class="fixed inset-0 bg-black/30 z-40 hidden"></div>
+
+      <aside id="sidebar"
+        class="fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-40 transform -translate-x-full transition-transform duration-200">
+        <!-- Sidebar brand row -->
+        <div class="h-16 px-4 flex items-center gap-2 border-b">
+          <span class="material-icons text-blue-600">auto_awesome</span>
+          <span class="font-semibold text-gray-800">Student-AI-Assistant</span>
+          <button id="sidebarClose" class="ml-auto p-2 rounded hover:bg-gray-100" aria-label="Close sidebar">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+
+        <!-- Links -->
+        <nav class="px-3 py-4 space-y-1">
+
+          {# Subjects (NEW) #}
+          <a href="{{ url_for('subjects_bp.list_subjects') }}"
+             class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100
+                    {% if request.endpoint and request.endpoint.startswith('subjects_bp.') %} bg-gray-100 {% endif %}">
+            <span class="material-icons text-blue-600">library_books</span>
+            <span class="text-gray-800">Subjects</span>
+          </a>
+
+          <!-- <a href="{{ url_for('tools.summarize') }}"
+             class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100
+                    {% if request.endpoint == 'tools.summarize' %} bg-gray-100 {% endif %}">
+            <span class="material-icons text-blue-600">description</span>
+            <span class="text-gray-800">Summarizing the result</span>
+          </a> -->
+
+          <a href="{{ url_for('tools.timetable') }}"
+             class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100
+                    {% if request.endpoint == 'tools.timetable' %} bg-gray-100 {% endif %}">
+            <span class="material-icons text-blue-600">calendar_month</span>
+            <span class="text-gray-800">Smart timetable generator</span>
+          </a>
+
+          <!-- <a href="{{ url_for('tools.notes') }}"
+             class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100
+                    {% if request.endpoint == 'tools.notes' %} bg-gray-100 {% endif %}">
+            <span class="material-icons text-blue-600">question_answer</span>
+            <span class="text-gray-800">Notes Q&amp;A</span>
+          </a> -->
+
+          <!-- <a href="{{ url_for('tools.assignments') }}"
+             class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100
+                    {% if request.endpoint == 'tools.assignments' %} bg-gray-100 {% endif %}">
+            <span class="material-icons text-blue-600">assignment_turned_in</span>
+            <span class="text-gray-800">Assignment tracker</span>
+          </a> -->
+
+          <a href="{{ url_for('tools.exam') }}"
+             class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100
+                    {% if request.endpoint == 'tools.exam' %} bg-gray-100 {% endif %}">
+            <span class="material-icons text-blue-600">quiz</span>
+            <span class="text-gray-800">Exam prep quiz</span>
+          </a>
+        </nav>
+      </aside>
+    {% endif %}
+
+    <!-- PAGE CONTENT -->
+    <main id="pageContent"
+          class="transition-all duration-200 mx-auto max-w-6xl px-4 py-6 {% if session.get('user_id') %}lg:ml-64{% endif %}">
+      <!-- Flash messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="mb-4 space-y-2">
+            {% for category, msg in messages %}
+              {% set bg = 'bg-red-50 border-red-300 text-red-800' if category == 'error'
+                          else 'bg-green-50 border-green-300 text-green-800' if category == 'success'
+                          else 'bg-blue-50 border-blue-300 text-blue-800' %}
+              <div class="border {{ bg }} rounded px-3 py-2 text-sm flex items-center gap-2">
+                <span class="material-icons text-base">
+                  {{ 'error' if category == 'error' else 'check_circle' if category == 'success' else 'info' }}
+                </span>
+                <span>{{ msg }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    {% if session.get('user_id') %}
+    <!-- Sidebar toggle JS (only when logged in) -->
+    <script>
+      const sidebar   = document.getElementById('sidebar');
+      const overlay   = document.getElementById('sidebarOverlay');
+      const toggleBtn = document.getElementById('sidebarToggle');
+      const closeBtn  = document.getElementById('sidebarClose');
+      const mqLarge   = window.matchMedia('(min-width: 1024px)');
+      const page      = document.getElementById('pageContent');
+
+      function openSidebar(temporary = true) {
+        sidebar.classList.remove('-translate-x-full');
+        toggleBtn?.setAttribute('aria-expanded', 'true');
+        if (temporary) overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        toggleBtn?.setAttribute('aria-expanded', 'false');
+        overlay.classList.add('hidden');
+      }
+      function toggleSidebar() {
+        if (sidebar.classList.contains('-translate-x-full')) {
+          openSidebar(!mqLarge.matches);   // overlay only on small screens
+        } else {
+          closeSidebar();
+        }
+      }
+
+      toggleBtn?.addEventListener('click', toggleSidebar);
+      closeBtn?.addEventListener('click', closeSidebar);
+      overlay?.addEventListener('click', closeSidebar);
+
+      function syncSidebarToScreen() {
+        if (mqLarge.matches) {
+          openSidebar(false);
+          page.classList.add('lg:ml-64');
+          page.style.marginLeft = '16rem';
+        } else {
+          closeSidebar();
+          page.classList.remove('lg:ml-64');
+          page.style.marginLeft = '';
+        }
+      }
+      syncSidebarToScreen();
+      mqLarge.addEventListener('change', syncSidebarToScreen);
+    </script>
+    {% endif %}
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

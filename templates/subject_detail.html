@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block title %}{{ subject.name }} - Nova{% endblock %}
+
+{% block content %}
+<div class="container mx-auto space-y-8">
+
+  <!-- Header -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex items-center gap-3">
+      <span class="material-icons text-blue-600 text-3xl">book</span>
+      <div>
+        <h1 class="text-2xl font-bold">{{ subject.name }}</h1>
+        <p class="text-gray-500 text-sm">{{ documents|length }} document{{ "s" if documents|length != 1 else "" }}
+          uploaded</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-xl font-semibold mb-3 flex items-center">
+      <span class="material-icons text-blue-600 mr-2">upload_file</span>
+      Upload documents
+    </h2>
+    <form action="{{ url_for('subjects_bp.upload_files', subject_id=subject._id) }}" method="POST"
+      enctype="multipart/form-data" class="space-y-3">
+      <input type="file" name="files" multiple
+        accept=".pdf,.docx,.txt,.md,.markdown,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp"
+        class="block w-full border rounded p-2">
+      <p class="text-sm text-gray-500">
+        Allowed: PDF, DOCX, TXT, MD/Markdown, PNG/JPG/TIFF/BMP/WEBP.
+        Files are <strong>OCR’d and indexed automatically</strong> into this subject’s vector DB.
+      </p>
+      <button type="submit" class="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        <span class="material-icons mr-2">cloud_upload</span> Upload
+      </button>
+    </form>
+
+    {% if documents %}
+    <div class="mt-6">
+      <h3 class="font-medium mb-2">Files</h3>
+      <ul class="list-disc pl-5 space-y-1">
+        {% for d in documents %}
+        <li class="text-gray-700">{{ d.filename }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Chat -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-xl font-semibold mb-3 flex items-center">
+      <span class="material-icons text-blue-600 mr-2">chat</span>
+      Chat with {{ subject.name }}
+    </h2>
+
+    <div id="chatBox" class="border rounded p-4 h-80 overflow-y-auto bg-gray-50"></div>
+
+    <form id="chatForm" class="mt-3 flex gap-2">
+      <input id="chatInput" type="text" class="flex-1 border rounded p-2"
+        placeholder="Ask about the uploaded materials..." required />
+      <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" type="submit">
+        Send
+      </button>
+    </form>
+    <div class="mt-3 text-xs text-gray-500">
+      Answers come strictly from this subject’s indexed materials.
+      If nothing relevant is found, you’ll get: “I don't know based on your materials.”
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  const chatBox  = document.getElementById('chatBox');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput= document.getElementById('chatInput');
+
+  // keep this helper – we still use it for sources, etc.
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (m) => (
+      { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m]
+    ));
+  }
+
+  // NEW: bold + line breaks, with escape built in
+  function nl2brBold(s) {
+    return String(s)
+      .replace(/[&<>"']/g, (m) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m]))
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\n/g, "<br>");
+  }
+
+  // Add a chat bubble (HTML allowed for bot; user is escaped via nl2brBold)
+  function addMsgHTML(html, who) {
+    const wrap = document.createElement('div');
+    wrap.className = "mb-2";
+    const bubble = document.createElement('div');
+    bubble.className = who === 'user'
+      ? "inline-block bg-blue-600 text-white px-3 py-2 rounded-lg whitespace-pre-wrap"
+      : "inline-block bg-white border px-3 py-2 rounded-lg whitespace-pre-wrap";
+    bubble.innerHTML = html;
+    wrap.appendChild(bubble);
+    chatBox.appendChild(wrap);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function addUserMsg(text) {
+    addMsgHTML(nl2brBold(text), 'user');   // <-- use the new function
+  }
+
+  // Build the bot bubble with answer + Sources (no mode line)
+  function formatBotBubble(answer, mode, sources) {
+    let html = `<div class="text-gray-800 text-[15px] leading-relaxed">${nl2brBold(
+      answer || "I don't know based on your materials."
+    )}</div>`;
+
+    if (Array.isArray(sources) && sources.length) {
+      html += `<div class="mt-3 text-sm text-gray-600"><strong>Sources</strong><ul class="list-disc ml-5 mt-1 space-y-1">` +
+        sources.map(s =>
+          `<li>[${s.rank}] ${escapeHtml(s.source)} <span class="text-gray-400">(relevance: ${s.relevance})</span></li>`
+        ).join('') +
+        `</ul></div>`;
+    }
+    return html;
+  }
+
+  chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = chatInput.value.trim();
+    if (!msg) return;
+
+    addUserMsg(msg);
+    chatInput.value = "";
+
+    // temporary "Thinking..." bubble we will replace
+    const thinkingWrap = document.createElement('div');
+    thinkingWrap.className = "mb-2";
+    const thinking = document.createElement('div');
+    thinking.className = "inline-block bg-white border px-3 py-2 rounded-lg";
+    thinking.textContent = "Thinking...";
+    thinkingWrap.appendChild(thinking);
+    chatBox.appendChild(thinkingWrap);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    try {
+      const res = await fetch('{{ url_for("subjects_bp.api_chat_subject", subject_id=subject._id) }}', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: msg})
+      });
+
+      const data = await res.json();
+      thinkingWrap.remove();
+
+      if (!res.ok) {
+        addMsgHTML(nl2brBold(data.error || "Something went wrong."), 'bot');
+        return;
+      }
+
+      const bubble = formatBotBubble(data.answer, data.mode, data.sources);
+      addMsgHTML(bubble, 'bot');
+
+    } catch (err) {
+      thinkingWrap.remove();
+      addMsgHTML("Network error.", 'bot');
+      console.error(err);
+    }
+  });
+})();
+</script>
+{% endblock %}

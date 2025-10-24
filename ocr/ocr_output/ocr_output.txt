@@ -1,0 +1,366 @@
+
+--- Page 1 ---
+©. Module 1: Introduction to User Interface Design (CO1)
+1.1 What is User Experience (UX) Design?
+
+Definition:
+
+User Experience (UX) Design is the process of designing products that provide meaningful,
+relevant, and enjoyable experiences to users. It involves research, design, usability, and
+emotional impact.
+
+Example:
+The ease of booking a cab on Ola or Uber shows good UX — simple steps, fast feedback, and
+clear visuals.
+
+Components of User Experience
+
+Component Description Example
+
+Usability How easy it is to use. Simple navigation in Gmail.
+Usefulness How well it fulfills the user’s purpose. Google Maps navigation.
+Desirability Emotional connection and attractiveness. Apple’s clean design.
+
+Accessibility Usable by everyone, including disabled users. Screen readers for blind users.
+
+Credibility Trust and reliability. Verified badges on social media.
+
+Evolution of UX Design
+1. Pre-digital Era: Focus on human factors and ergonomics.
+2. Graphical User Interfaces (1980s): Apple and Xerox introduced icons and windows.
+3. Web UX (1990s-2000s): Focus on usability and information architecture.
+
+4. Mobile and Al Era (2010-Present): Personalization, AR/VR, and cross-platform design.
+
+Elements of User Experience (Jesse James Garrett Model)
+
+Plane Focus Example
+
+Strategy Define business goals and user needs. “Help users book tickets easily.”
+Scope Determine features and functionalities. Payment, seat selection, etc.
+Structure Information and interaction design. Menu hierarchy and page flow.
+Skeleton Layout and placement of elements. Buttons, forms, navigation.
+
+Surface Final visual design. Fonts, colors, icons.
+
+
+--- Page 2 ---
+UX Requirements
+e User Requirements: What users need.
+e Functional Requirements: What the system should do.
+
+e Business Requirements: What the company wants to achieve.
+
+UX Strategy
+
+Connects user needs with business goals through:
+e Research
+e Design roadmap
+
+e Success metrics (e.g., engagement rate)
+
+UX Design Principles
+
+Principle Description Example
+
+Simplicity Keep it minimal and clear. Google homepage.
+Consistency Uniform design across screens. Same icons for edit/delete.
+Feedback Showresponseto user action. “Item added to cart.”
+Visibility Make key functions easy to find. Search bar at top.
+
+Accessibility Support all user types. Voice commands.
+
+User-Centric Design (UCD)
+
+Definition:
+An iterative process focused on user needs and feedback throughout design and development.
+
+Steps:
+1. Understand users
+2. Design solutions
+3. Test with users
+4. Refine
+
+Benefits:
+Higher satisfaction, lower redesign cost, better usability.
+
+
+--- Page 3 ---
+Module 2: User Research and Journey (CO2)
+2.1 Understanding Users
+e Types of Users:
+o Primary Users: Directly use the product.
+o Secondary Users: Influence or support the primary user.
+o Tertiary Users: Have an indirect interest (stakeholders).
+e Problem Formulation:
+o Identify user pain points.
+o Define goals and challenges clearly.
+
+e Need Finding:
+Techniques to discover what users actually require.
+
+2.2 5S Model
+1. Survey: Understand the environment.
+2. Segment: Divide users into groups.
+3. Select: Choose target users.
+4. Study: Observe and analyze their behavior.
+
+5. Synthesize: Combine insights to form design decisions.
+
+User Research Goals
+e Understand user needs, motivations, and behaviors.
+e Identify usability problems early.
+
+e Validate assumptions.
+
+Heuristic Analysis
+
+A usability inspection method where experts evaluate the interface using established
+principles.
+
+Common Heuristics:
+e Visibility of system status
+e Match between system and real world
+e User control and freedom
+
+e Consistency and standards
+
+
+--- Page 4 ---
+e Error prevention and recovery
+
+User Personas
+
+Definition:
+Fictional characters representing key user types.
+
+Example:
+“Ananya, 21, college student, uses mobile apps for daily planning.”
+
+Personas help designers empathize and design according to user goals.
+
+Identifying & Recruiting Users
+e Select users who match target demographics.
+
+e Use surveys, social media, or user panels for recruitment.
+
+2.3 User Research Methodologies
+Type Description Examples
+Qualitative Understand behaviors and motivations. Interviews, focus groups.
+
+Quantitative Use data to measure patterns. Surveys, analytics.
+
+Common Research Methods
+e User Interviews - 1:1 discussions to gather insights.
+e Focus Groups - Group discussion on experiences.
+e Expert Reviews - Usability experts evaluate the product.
+e Observation —- Watch users perform tasks.
+
+e Tools: Google Forms, Maze, Hotjar, Dovetail.
+
+
+--- Page 5 ---
+® Module 3: UX Design Process (CO3)
+
+3.1 Defining the UX Design Process
+The UX Design Process ensures a structured way to create user-friendly designs.
+Stages:
+
+1. Research: Understand users.
+
+2. Define: Problem statement and goals.
+
+3. Ideate: Brainstorm possible solutions.
+
+4. Design: Create wireframes and prototypes.
+
+5. Test: Get user feedback.
+
+6. Implement: Final design development.
+
+Understanding User Needs
+e Conduct surveys and interviews.
+e Observe real-world user interactions.
+
+e Use empathy maps.
+
+Flow Chart
+Visual representation of user paths within the product.
+Example:
+
+Login > Select Product > Add to Cart > Checkout > Payment Confirmation.
+
+3.2 Empathy Map
+
+Four Quadrants:
+1. Says —What users say.
+2. Thinks — What they think privately.
+3. Does -—What actions they take.
+
+4. Feels —- Emotions behind those actions.
+
+Emotional Mapping
+
+Understanding user emotions throughout their journey helps improve satisfaction.
+
+
+--- Page 6 ---
+Example:
+In food delivery: excitement > frustration (delay) > relief (delivery arrives).
+
+Design Thinking
+
+A human-centered approach with 5 stages:
+
+1.
+
+2.
+
+Empathize
+Define
+Ideate
+Prototype
+
+Test
+
+Wicked Problems
+
+Complex design problems with no clear solution.
+Example: Designing a traffic management system for a large city.
+
+Ideation
+
+Generating multiple creative ideas for solving user problems.
+
+Techniques: Brainstorming, mind mapping, sketching.
+
+
+--- Page 7 ---
+\ Module 4: Wireframing and Prototyping (CO4)
+
+4.1 Visual Design Principles
+
+Principle Description Example
+
+Balance = _ Even distribution of visual weight. Symmetrical layout.
+Contrast Highlight important elements. Bold headings.
+Alignment Proper positioning for clarity. Grid systems.
+
+Proximity Group related items together. Navigation menus.
+
+Interaction Design
+
+Focuses on how users interact with the interface.
+Includes gestures, clicks, transitions, and animations.
+
+Information Design & Data Visualization
+e Present data clearly and logically.
+
+e Use charts, graphs, and infographics for better understanding.
+
+Information Architecture (IA)
+
+Organizing and structuring content logically.
+Example: Menus, site maps, navigation bars.
+
+4.2 Wireframing & Storyboards
+
+Wireframe:
+A basic sketch of the layout and elements of a page.
+
+Storyboard:
+Visual representation of user flow — like a comic strip of interactions.
+
+Digital Design Elements
+
+e Buttons
+e Forms
+e Menus
+
+e Cards
+
+
+--- Page 8 ---
+e Icons
+
+e Sliders
+
+Screen Design & Layout
+e Use grid systems for structure.
+e Follow visual hierarchy.
+
+e Ensure responsive design for all screen sizes.
+
+Prototyping Tools
+
+Tool Use
+
+Figma Cloud-based collaborative design.
+Adobe XD Interactive prototypes.
+
+Sketch Ul design for macOS.
+
+InVision Clickable prototypes.
+
+Balsamiq Low-fidelity wireframes.
+
+4.3 Usability Testing
+
+Definition:
+Testing how easy it is for users to use the interface.
+
+Types:
+
+e Moderated: With facilitator guidance.
+
+e Unmoderated: Independent user testing.
+
+e Remote: Online.
+
+e In-person: Physical observation.
+Process:
+
+1. Plan test goals.
+
+2. Select participants.
+
+3. Conduct sessions.
+
+4. Analyze feedback.
+
+5. Improve design.
+
+
+--- Page 9 ---
+< Module 5: Applications and Future of UXD (CO5)
+
+5.1 AR (Augmented Reality) & VR (Virtual Reality)
+
+e AR: Adds digital elements to the real world.
+Example: Snapchat filters, Google Lens.
+
+e VR: Immerses users in a completely virtual world.
+Example: Oculus VR gaming, virtual tours.
+
+UXD and XR
+
+XR (Extended Reality):
+Umbrella term covering AR, VR, and MR (Mixed Reality).
+
+Role of UXD:
+e Design intuitive 3D interactions.
+e Ensure comfort and realism.
+
+e Consider motion sickness and accessibility.
+
+Present and Future of XR
+
+Present:
+Used in gaming, education, healthcare, and retail.
+
+Future Trends:
+e Metaverse integration
+e Haptic feedback and sensory design
+e Al-powered immersive experiences
+
+e Natural user interfaces (gesture/voice-based)

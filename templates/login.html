@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Login - Nova{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden mt-10">
+  <div class="px-6 py-8">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">Log In</h2>
+
+    <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-6">
+      <div>
+        <label for="email" class="block text-gray-700 text-sm font-medium mb-2">Email</label>
+        <div class="relative">
+          <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">mail</span>
+          <input
+            type="email" id="email" name="email" required
+            class="w-full border rounded pl-10 pr-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="you@example.com"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="password" class="block text-gray-700 text-sm font-medium mb-2">Password</label>
+        <div class="relative">
+          <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">lock</span>
+          <input
+            type="password" id="password" name="password" required
+            class="w-full border rounded pl-10 pr-10 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="••••••••"
+          />
+          <!-- simple toggle (optional JS later) -->
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <input type="checkbox" id="remember" name="remember" class="mr-2">
+        <label for="remember" class="text-sm text-gray-700">Remember me</label>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button type="submit"
+          class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+          <span class="material-icons text-base">login</span>
+          Log In
+        </button>
+        <a href="{{ url_for('auth.register') }}"
+           class="inline-flex items-center gap-1 font-medium text-sm text-blue-600 hover:text-blue-800">
+          <span class="material-icons text-base">person_add</span>
+          Need an account?
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
